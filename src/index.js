@@ -6,7 +6,10 @@
  Напишите аналог встроенного метода forEach для работы с массивами
  Посмотрите как работает forEach и повторите это поведение для массива, который будет передан в параметре array
  */
-function forEach(array, fn) {
+function forEach(array, fn, _this) {
+    for(let i = 0; i < array.length; i++){
+        fn.apply(_this, [array[i], i, array]);
+    }
 }
 
 /*
@@ -16,6 +19,11 @@ function forEach(array, fn) {
  Посмотрите как работает map и повторите это поведение для массива, который будет передан в параметре array
  */
 function map(array, fn) {
+    let newArr = [];
+    for(let i = 0; i < array.length; i++){
+        newArr.push(fn(array[i], i, array));
+    }
+    return newArr;
 }
 
 /*
@@ -25,6 +33,12 @@ function map(array, fn) {
  Посмотрите как работает reduce и повторите это поведение для массива, который будет передан в параметре array
  */
 function reduce(array, fn, initial) {
+    let i = !initial ? 1 : 0;
+    initial = initial || array[0];
+    for(; i < array.length; i++){
+        initial = fn(initial, array[i], i, array);
+    }
+    return initial;
 }
 
 /*
@@ -36,6 +50,11 @@ function reduce(array, fn, initial) {
    upperProps({ name: 'Сергей', lastName: 'Петров' }) вернет ['NAME', 'LASTNAME']
  */
 function upperProps(obj) {
+    let arr = [];
+    for(let key in obj){
+        arr.push(key.toLocaleUpperCase());
+    }
+    return arr;
 }
 
 /*
@@ -44,7 +63,32 @@ function upperProps(obj) {
  Напишите аналог встроенного метода slice для работы с массивами
  Посмотрите как работает slice и повторите это поведение для массива, который будет передан в параметре array
  */
-function slice(array, from, to) {
+function slice(array, from = 0, to = array.length) {
+    let arr = [];
+
+    if(from < 0){
+        from = (array.length - 1) + from;
+        if(from < 0){
+            from = 0;
+        }
+    }
+
+    if(to < 0){
+        to = array.length + to;
+        if(to < 0){
+            to = 0;
+        }
+    }
+    if(to > array.length){
+        to = array.length;
+    }
+
+    while(from < to){
+        arr.push(array[from]);
+        from++;
+    }
+
+    return arr;
 }
 
 /*
@@ -54,6 +98,13 @@ function slice(array, from, to) {
  Proxy должен перехватывать все попытки записи значений свойств и возводить это значение в квадрат
  */
 function createProxy(obj) {
+    let proxy = new Proxy(obj, {
+        set(target, prop, val){
+            target[prop] = val * val;
+            return true;
+        }
+    });
+    return proxy;
 }
 
 export {
