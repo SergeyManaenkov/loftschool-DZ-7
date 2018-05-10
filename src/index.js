@@ -10,8 +10,8 @@
  Пример:
    createDivWithText('loftschool') // создаст элемент div, поместит в него 'loftschool' и вернет созданный элемент
  */
-function createDivWithText( text ) {
-    const divElement = document.createElement( 'DIV' );
+function createDivWithText(text) {
+    const divElement = document.createElement('DIV');
 
     divElement.innerText = text;
 
@@ -27,9 +27,9 @@ function createDivWithText( text ) {
     prepend(document.querySelector('#one'), document.querySelector('#two'))
     добавит элемент переданный первым аргументом в начало элемента переданного вторым аргументом
  */
-function prepend( what, where ) {
+function prepend(what, where) {
 
-    where.insertBefore( what, where.childNodes[0] );
+    where.insertBefore(what, where.childNodes[0]);
 
 }
 
@@ -55,12 +55,12 @@ function prepend( what, where ) {
    // функция должна вернуть массив с элементами div и span
    т.к. следующим соседом этих элементов является элемент с тегом P
  */
-function findAllPSiblings( where ) {
+function findAllPSiblings(where) {
     const rez = [];
 
-    for ( const child of where.children ) {
-        if ( child.nextElementSibling && child.nextElementSibling.tagName == 'P' ) {
-            rez.push( child );
+    for (const child of where.children) {
+        if (child.nextElementSibling && child.nextElementSibling.tagName == 'P') {
+            rez.push(child);
         }
     }
 
@@ -85,12 +85,12 @@ function findAllPSiblings( where ) {
 
    findError(document.body) // функция должна вернуть массив с элементами 'привет' и 'loftschool'
  */
-function findError( where ) {
+function findError(where) {
     const result = [];
 
-    for ( const child of where.childNodes ) {
-        if ( child.nodeType === 1 ) {
-            result.push( child.textContent );
+    for (const child of where.childNodes) {
+        if (child.nodeType === 1) {
+            result.push(child.textContent);
         }
     }
 
@@ -109,9 +109,9 @@ function findError( where ) {
    После выполнения функции, дерево <div></div>привет<p></p>loftchool!!!
    должно быть преобразовано в <div></div><p></p>
  */
-function deleteTextNodes( where ) {
-    for ( const child of where.childNodes ) {
-        if ( child.nodeType === 3 ) {
+function deleteTextNodes(where) {
+    for (const child of where.childNodes) {
+        if (child.nodeType === 3) {
             child.remove();
         }
     }
@@ -130,30 +130,17 @@ function deleteTextNodes( where ) {
    После выполнения функции, дерево <span> <div> <b>привет</b> </div> <p>loftchool</p> !!!</span>
    должно быть преобразовано в <span><div><b></b></div><p></p></span>
  */
-function deleteTextNodesRecursive( where ) {
-    for ( let i = 0; i < where.childNodes.length; i++ ) {
-        let child = where.childNodes[i];
-
-        if ( child.childNodes.length ) {
-            deleteTextNodesRecursive( child );
-        } else if ( child.nodeType === 1 ) {
+function deleteTextNodesRecursive(where) {
+    for (const child of [...where.childNodes]) {
+        if (child.childNodes.length) {
+            deleteTextNodesRecursive(child);
+        } else if (child.nodeType === 1) {
             child.textContent = '';
         }
-        if ( child.nodeType === 3 ) {
+        if (child.nodeType === 3) {
             child.remove();
-            i--;
         }
     }
-    // for (const child of where.childNodes) {
-    //     if (child.childNodes.length) {
-    //         deleteTextNodesRecursive(child);
-    //     } else if (child.nodeType === 1) {
-    //         child.textContent = '';
-    //     }
-    //     if (child.nodeType === 3) {
-    //         child.remove();
-    //     }
-    // }
 }
 
 /*
@@ -176,31 +163,31 @@ function deleteTextNodesRecursive( where ) {
      texts: 3
    }
  */
-function collectDOMStat( root ) {
+function collectDOMStat(root) {
     let rez = {
         tags: {},
         classes: {},
         texts: 0
     };
 
-    function recurs( root ) {
-        for ( const child of root.childNodes ) {
-            if ( child.nodeType === 1 ) {
+    function recurs(root) {
+        for (const child of root.childNodes) {
+            if (child.nodeType === 1) {
                 rez.tags[child.tagName] = (rez.tags[child.tagName] || 0) + 1;
-                for ( const cls of child.classList ) {
+                for (const cls of child.classList) {
                     rez.classes[cls] = (rez.classes[cls] || 0) + 1;
                 }
-            } else if ( child.nodeType === 3 ) {
+            } else if (child.nodeType === 3) {
                 ++rez.texts;
             }
 
-            if ( child.childNodes.length ) {
-                recurs( child );
+            if (child.childNodes.length) {
+                recurs(child);
             }
         }
     }
 
-    recurs( root );
+    recurs(root);
 
     return rez;
 }
@@ -237,12 +224,12 @@ function collectDOMStat( root ) {
      nodes: [div]
    }
  */
-function observeChildNodes( where, fn ) {
+function observeChildNodes(where, fn) {
 
-    var observer = new MutationObserver( function ( mutations ) {
-        mutations.forEach( function ( mutation ) {
-            if ( mutation.type == 'childList' ) {
-                if ( mutation.addedNodes.length ) {
+    var observer = new MutationObserver(function (mutations) {
+        mutations.forEach(function (mutation) {
+            if (mutation.type == 'childList') {
+                if (mutation.addedNodes.length) {
 
                     fn(
                         {
@@ -251,7 +238,7 @@ function observeChildNodes( where, fn ) {
                         }
                     );
                 }
-                if ( mutation.removedNodes.length ) {
+                if (mutation.removedNodes.length) {
                     fn(
                         {
                             type: 'remove',
@@ -260,10 +247,10 @@ function observeChildNodes( where, fn ) {
                     );
                 }
             }
-        } );
-    } );
+        });
+    });
 
-    observer.observe( where, { childList: true, subtree: true } );
+    observer.observe(where, {childList: true, subtree: true});
 }
 
 export {
