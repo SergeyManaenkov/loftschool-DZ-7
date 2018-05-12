@@ -51,7 +51,9 @@ function skipDefault( eventName, target ) {
 // для указанного элемента должно быть сэмулировано события click
  */
 function emulateClick( target ) {
-    target.click();
+    const click = new CustomEvent('click');
+
+    target.dispatchEvent(click);
 }
 
 /*
