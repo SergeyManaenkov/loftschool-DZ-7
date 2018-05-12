@@ -1,3 +1,7 @@
+/* Вспомогательные функции */
+
+import * as h from './helper';
+
 /* Задание со звездочкой */
 
 /*
@@ -15,7 +19,7 @@
    const newDiv = document.createElement('div');
    homeworkContainer.appendChild(newDiv);
  */
-const homeworkContainer = document.querySelector('#homework-container');
+const homeworkContainer = document.querySelector( '#homework-container' );
 
 /*
  Функция должна создавать и возвращать новый div с классом draggable-div и случайными размерами/цветом/позицией
@@ -27,6 +31,19 @@ const homeworkContainer = document.querySelector('#homework-container');
    homeworkContainer.appendChild(newDiv);
  */
 function createDiv() {
+    const div = document.createElement( 'div' );
+
+    div.classList.add( 'draggable-div' );
+    // Позицию
+    div.style.top = h.randomSizePX();
+    div.style.left = h.randomSizePX();
+    // Размер
+    div.style.width = h.randomSizePX();
+    div.style.height = h.randomSizePX();
+    // Цвет
+    div.style.backgroundColor = h.randomColor();
+
+    return div;
 }
 
 /*
@@ -37,22 +54,23 @@ function createDiv() {
    homeworkContainer.appendChild(newDiv);
    addListeners(newDiv);
  */
-function addListeners(target) {
+function addListeners( target ) {
+    target.addEventListener();
 }
 
-let addDivButton = homeworkContainer.querySelector('#addDiv');
+let addDivButton = homeworkContainer.querySelector( '#addDiv' );
 
-addDivButton.addEventListener('click', function() {
+addDivButton.addEventListener( 'click', function () {
     // создать новый div
     const div = createDiv();
 
     // добавить на страницу
-    homeworkContainer.appendChild(div);
+    homeworkContainer.appendChild( div );
     // назначить обработчики событий мыши для реализации D&D
-    addListeners(div);
+    addListeners( div );
     // можно не назначать обработчики событий каждому div в отдельности, а использовать делегирование
     // или использовать HTML5 D&D - https://www.html5rocks.com/ru/tutorials/dnd/basics/
-});
+} );
 
 export {
     createDiv
