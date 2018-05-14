@@ -33,6 +33,9 @@ const homeworkContainer = document.querySelector( '#homework-container' );
 function createDiv() {
     const div = document.createElement( 'div' );
 
+    div.setAttribute( 'draggable', 'true' );
+
+    div.classList.add( 'draggable' );
     div.classList.add( 'draggable-div' );
     // Позицию
     div.style.top = h.randomSizePX();
