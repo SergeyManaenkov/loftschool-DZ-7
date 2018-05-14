@@ -3,6 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>{{htmlWebpackPlugin.options.title}}</title>
+    <style type="text/css" rel="stylesheet">
+        #homework-container
+        {
+            /*position: absolute;*/
+        }
+        .draggable-div
+        {
+            /*display: inline-block;*/
+            /*position: relative;*/
+        }
+        [draggable]{
+            cursor: move;
+        }
+        div.over {
+            border: 2px dashed #000;
+        }
+    </style>
 </head>
 <body>
 <div id="homework-container">

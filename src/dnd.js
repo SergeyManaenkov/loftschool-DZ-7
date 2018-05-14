@@ -33,6 +33,8 @@ const homeworkContainer = document.querySelector( '#homework-container' );
 function createDiv() {
     const div = document.createElement( 'div' );
 
+    div.id = h.guid();
+
     div.setAttribute( 'draggable', 'true' );
 
     div.classList.add( 'draggable' );
@@ -57,8 +59,57 @@ function createDiv() {
    homeworkContainer.appendChild(newDiv);
    addListeners(newDiv);
  */
-function addListeners( target ) {
-    target.addEventListener();
+let divs = [];
+let dragSrcEl = null;
+addListeners();
+function addListeners() {
+
+    let homeworkContainer = document.querySelector('#homework-container');
+
+    // начали перетаскивать
+    homeworkContainer.addEventListener( 'dragstart', function handleDragStart(e) {
+        dragSrcEl = e.target;
+
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/html', e.target.outerHTML);
+    } );
+    // перетаскиваемый элемент на элементе назначения
+    homeworkContainer.addEventListener( 'dragenter', function handleDragEnter( e ) {
+        e.target.classList.add( 'over' );
+    } );
+    // происходит каждые несколько сотен милисекунд, над
+    homeworkContainer.addEventListener( 'dragover', function handleDragOver( e ) {
+        if ( e.preventDefault ) {
+            e.preventDefault();
+        }
+
+        e.dataTransfer.dropEffect = 'move';
+
+        return false;
+    } );
+
+    // Курсор выходит за пределы элемента
+    homeworkContainer.addEventListener( 'dragleave', function handleDragLeave( e ) {
+        e.target.classList.remove( 'over' );
+    } );
+
+    // Когда пользователь отпустил мышь
+    homeworkContainer.addEventListener( 'drop', function handleDrop(e) {
+
+        if (e.stopPropagation) {
+            e.stopPropagation();
+        }
+
+        if (dragSrcEl != this) {
+            e.target.classList.remove('over');
+            dragSrcEl.classList.remove('over');
+            dragSrcEl.outerHTML = e.target.outerHTML;
+            e.target.outerHTML = e.dataTransfer.getData('text/html');
+        }
+
+        return false;
+    } );
+
 }
 
 let addDivButton = homeworkContainer.querySelector( '#addDiv' );
@@ -67,10 +118,12 @@ addDivButton.addEventListener( 'click', function () {
     // создать новый div
     const div = createDiv();
 
+    divs.push(div);
+
     // добавить на страницу
     homeworkContainer.appendChild( div );
     // назначить обработчики событий мыши для реализации D&D
-    addListeners( div );
+    // addListeners( div );
     // можно не назначать обработчики событий каждому div в отдельности, а использовать делегирование
     // или использовать HTML5 D&D - https://www.html5rocks.com/ru/tutorials/dnd/basics/
 } );
