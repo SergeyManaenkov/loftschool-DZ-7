@@ -44,6 +44,9 @@ const addButton = homeworkContainer.querySelector( '#add-button' );
 const listTable = homeworkContainer.querySelector( '#list-table tbody' );
 
 const getFilterCookie = () => {
+    if ( document.cookie == '' ) {
+        return [];
+    }
     let cookies = document.cookie.split( '; ' ).reduce( ( prev, current ) => {
         const [name, value] = current.split( '=' );
         const obj = {
@@ -55,6 +58,7 @@ const getFilterCookie = () => {
 
         return prev;
     }, [] );
+
     if ( filterNameInput.value ) {
         const reg = new RegExp( filterNameInput.value, 'i' );
 
@@ -77,8 +81,8 @@ addButton.addEventListener( 'click', () => {
 
     renderTable();
 
-    addNameInput.value = '';
-    addValueInput.value = '';
+    // addNameInput.value = '';
+    // addValueInput.value = '';
 } );
 
 const renderTable = ( cookies = getFilterCookie() ) => {
@@ -104,7 +108,7 @@ function addTr( name, val ) {
     const tdName = document.createElement( 'td' );
     const tdVal = document.createElement( 'td' );
     const tdBtn = document.createElement( 'td' );
-    const btn = document.createElement( 'botton' );
+    const btn = document.createElement( 'button' );
 
     btn.setAttribute( 'type', 'button' );
     btn.setAttribute( 'value', name );

@@ -58,23 +58,29 @@ describe('ДЗ 7.2 - Cookie editor', () => {
 
         it('cookie должны добавляться при нажатии на "добавить"', () => {
             let cookies;
+            let name = 'test-cookie-name-1';
+            let val = 'test-cookie-value-1';
 
-            addNameInput.value = 'test-cookie-name-1';
-            addValueInput.value = 'test-cookie-value-1';
+            addNameInput.value = name;
+            addValueInput.value = val;
             addButton.click();
 
             cookies = getCookies();
-            assert(cookies.hasOwnProperty(addNameInput.value), 'cookie не добавлена в барузер');
-            assert.equal(cookies[addNameInput.value], addValueInput.value, 'cookie не добавлена в барузер');
+
+            assert(cookies.hasOwnProperty(name), 'cookie не добавлена в барузер');
+            assert.equal(cookies[name], val, 'cookie не добавлена в барузер');
             assert.equal(listTable.children.length, 1, 'cookie не добавлена в таблицу');
 
-            addNameInput.value = 'test-cookie-name-2';
-            addValueInput.value = 'test-cookie-value-2';
+            name = 'test-cookie-name-2';
+            val = 'test-cookie-value-2';
+
+            addNameInput.value = name;
+            addValueInput.value = val;
             addButton.click();
 
             cookies = getCookies();
-            assert(cookies.hasOwnProperty(addNameInput.value), 'cookie не добавлена в барузер');
-            assert.equal(cookies[addNameInput.value], addValueInput.value, 'cookie не добавлена в барузер');
+            assert(cookies.hasOwnProperty(name), 'cookie не добавлена в барузер');
+            assert.equal(cookies[name], val, 'cookie не добавлена в барузер');
             assert.equal(listTable.children.length, 2, 'cookie не добавлена в таблицу');
         });
 
@@ -133,7 +139,7 @@ describe('ДЗ 7.2 - Cookie editor', () => {
             addButton.click();
 
             deleteButton = listTable.querySelector('button');
-
+            debugger;
             deleteButton.click();
             cookies = getCookies();
             assert.equal(Object.keys(cookies).length, 1, 'cookie не удалена из браузера');
